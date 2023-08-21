@@ -83,7 +83,7 @@ class IntegerListImplTest {
 
     @Test
     void contains_noHasItemInIntegerList_returnFalse() {
-        assertFalse(testIntegers09.contains(88));
+       assertFalse(testIntegers09.contains(88));
     }
 
     @Test

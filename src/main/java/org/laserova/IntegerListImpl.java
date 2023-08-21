@@ -106,9 +106,9 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public boolean contains(Integer item) {
-//        this.selectionSort();
-//        return binarySearch(item)==-1;
-        return indexOf(item) != -1;
+        selectionSort(storage);
+        return binarySearch(storage,item)!=-1;
+//        return indexOf(item) != -1;
     }
 
     @Override
@@ -196,30 +196,30 @@ public class IntegerListImpl implements IntegerList {
         storage = newStorage;
     }
 
-    private void selectionSort() {
-        for (int i = 0; i < IntegerListImpl.this.storage.length - 1; i++) {
+    private void selectionSort(Integer[] storage) {
+        for (int i = 0; i < storage.length - 1; i++) {
             int minItemIndex = i;
-            for (int j = i + 1; j < IntegerListImpl.this.storage.length; j++) {
-                if (IntegerListImpl.this.storage[j] < IntegerListImpl.this.storage[minItemIndex]) {
+            for (int j = i + 1; j < storage.length; j++) {
+                if (storage[j] < storage[minItemIndex]) {
                     minItemIndex = j;
                 }
             }
-            int transit = IntegerListImpl.this.storage[i];
-            IntegerListImpl.this.storage[i] = IntegerListImpl.this.storage[minItemIndex];
-            IntegerListImpl.this.storage[minItemIndex] = transit;
+            int transit = storage[i];
+            storage[i] = storage[minItemIndex];
+            storage[minItemIndex] = transit;
         }
     }
 
-    private int binarySearch(Integer item) {
+    private int binarySearch(Integer[] storage,Integer item) {
         int firstIndex = 0;
-        int lastIndex = this.storage.length - 1;
+        int lastIndex = storage.length - 1;
         while (firstIndex <= lastIndex) {
             int middleIndex = (firstIndex + lastIndex) / 2;
-            if (this.storage[middleIndex].equals(item)) {
+            if (storage[middleIndex].equals(item)) {
                 return middleIndex;
-            } else if (this.storage[middleIndex] < item)
+            } else if (storage[middleIndex] < item)
                 firstIndex = middleIndex + 1;
-            else if (this.storage[middleIndex] > item)
+            else if (storage[middleIndex] > item)
                 lastIndex = middleIndex - 1;
         }
         return -1;
