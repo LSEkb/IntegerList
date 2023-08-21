@@ -22,26 +22,24 @@ public class IntegerListImpl implements IntegerList {
 
     public IntegerListImpl(Integer[] integers) {
         this.storage = new Integer[integers.length];
-        for (int i = 0; i < integers.length; i++) {
-            this.storage[i] = integers[i];
-        }
+        System.arraycopy(integers, 0, this.storage, 0, integers.length);
         this.size = integers.length;
     }
 
-//    @Override
-//    public String toString() {
-//        String a = "[ ";
-//
-//        StringBuilder values = new StringBuilder();
-//        for (int i = 0; i < this.storage.length; i++) {
-//            if (storage[i] != null) {
-//                values.append(storage[i] + " ");
-//            }
-//        }
-//        String b = values.toString();
-//        String c = "]";
-//        return a + b + c;
-//    }
+    @Override
+    public String toString() {
+        String a = "[ ";
+
+        StringBuilder values = new StringBuilder();
+        for (Integer integer : this.storage) {
+            if (integer != null) {
+                values.append(integer).append(" ");
+            }
+        }
+        String b = values.toString();
+        String c = "]";
+        return a + b + c;
+    }
 
     @Override
     public Integer add(Integer item) {
@@ -49,11 +47,9 @@ public class IntegerListImpl implements IntegerList {
         if (size == storage.length) {
             this.grow(storage.length);
         }
-//        storage[size] = item;
-//        size++;
-//        return item;
+        storage[size] = item;
         size++;
-        return storage[size];
+        return item;
     }
 
     @Override
@@ -96,18 +92,23 @@ public class IntegerListImpl implements IntegerList {
     public Integer remove(int index) {
         validateIndex(index);
         Integer item = storage[index];
-        if (index != size) {
-            System.arraycopy(storage, index + 1, storage, index, size - index);
+//        if (index < size) {
+//            System.arraycopy(storage, index + 1, storage, index, size - index);
+//        }
+//        size--;
+        for (int i = index; i < size - 1; i++) {
+            storage[i] = storage[i + 1];
         }
         size--;
+
         return item;
     }
 
     @Override
     public boolean contains(Integer item) {
-        this.selectionSort();
-        return binarySearch(item)==-1;
-//        return indexOf(item) != -1;
+//        this.selectionSort();
+//        return binarySearch(item)==-1;
+        return indexOf(item) != -1;
     }
 
     @Override
@@ -124,7 +125,7 @@ public class IntegerListImpl implements IntegerList {
     @Override
     public int lastIndexOf(Integer item) {
         validateItem(item);
-        for (int i = size; i >= 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             if (storage[i].equals(item)) {
                 return i;
             }
@@ -143,17 +144,14 @@ public class IntegerListImpl implements IntegerList {
         if (otherList == this) {
             return true;
         }
-        if (otherList == null) {
-            throw new RuntimeException("Null is not accepted");
-        } else {
-            if (this.size() == otherList.size()) {
-                for (int i = 0; i < size; i++) {
-                    if (!this.storage[i].equals(otherList.get(i))) {
-                        return false;
-                    }
+
+        if (this.size() == otherList.size()) {
+            for (int i = 0; i < size; i++) {
+                if (!this.storage[i].equals(otherList.get(i))) {
+                    return false;
                 }
-                return true;
             }
+            return true;
         }
         return false;
     }
@@ -212,15 +210,14 @@ public class IntegerListImpl implements IntegerList {
         }
     }
 
-    private int binarySearch (Integer item) {
+    private int binarySearch(Integer item) {
         int firstIndex = 0;
         int lastIndex = this.storage.length - 1;
-        while(firstIndex <= lastIndex) {
+        while (firstIndex <= lastIndex) {
             int middleIndex = (firstIndex + lastIndex) / 2;
             if (this.storage[middleIndex].equals(item)) {
                 return middleIndex;
-            }
-            else if (this.storage[middleIndex] < item)
+            } else if (this.storage[middleIndex] < item)
                 firstIndex = middleIndex + 1;
             else if (this.storage[middleIndex] > item)
                 lastIndex = middleIndex - 1;
