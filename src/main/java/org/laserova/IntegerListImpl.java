@@ -100,15 +100,13 @@ public class IntegerListImpl implements IntegerList {
             storage[i] = storage[i + 1];
         }
         size--;
-
         return item;
     }
 
     @Override
     public boolean contains(Integer item) {
-        selectionSort(storage);
+        quickSort(storage,0,size-1);
         return binarySearch(storage,item)!=-1;
-//        return indexOf(item) != -1;
     }
 
     @Override
@@ -223,5 +221,36 @@ public class IntegerListImpl implements IntegerList {
                 lastIndex = middleIndex - 1;
         }
         return -1;
+    }
+
+    public static void quickSort(Integer[] array, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(array, begin, end);
+
+            quickSort(array, begin, partitionIndex - 1);
+            quickSort(array, partitionIndex + 1, end);
+        }
+    }
+
+    private static int partition(Integer[] array, int begin, int end) {
+        int pivot = array[end];
+        int i = (begin - 1);
+
+        for (int j = begin; j < end; j++) {
+            if (array[j] <= pivot) {
+                i++;
+
+                swapElements(array, i, j);
+            }
+        }
+
+        swapElements(array, i + 1, end);
+        return i + 1;
+    }
+
+    private static void swapElements(Integer[] array, int left, int right) {
+        int temp = array[left];
+        array[left] = array[right];
+        array[right] = temp;
     }
 }
