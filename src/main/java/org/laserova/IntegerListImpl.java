@@ -31,12 +31,13 @@ public class IntegerListImpl implements IntegerList {
         String a = "[ ";
 
         StringBuilder values = new StringBuilder();
-        for (Integer integer : this.storage) {
-            if (integer != null) {
-                values.append(integer).append(" ");
+        for (int i=0;i<size;i++) {
+            if (storage[i] != null) {
+                values.append(storage[i]).append(" ");
             }
         }
         String b = values.toString();
+
         String c = "]";
         return a + b + c;
     }
@@ -87,14 +88,16 @@ public class IntegerListImpl implements IntegerList {
     public Integer remove(int index) {
         validateIndex(index);
         Integer item = storage[index];
-//        if (index < size) {
-//            System.arraycopy(storage, index + 1, storage, index, size - index);
-//        }
-//        size--;
-        for (int i = index; i < size - 1; i++) {
-            storage[i] = storage[i + 1];
+
+        if (index < size) {
+            System.arraycopy(storage, index + 1, storage, index, size - index-1);
         }
         size--;
+
+//        for (int i = index; i < size - 1; i++) {
+//            storage[i] = storage[i + 1];
+//        }
+//        size--;
         return item;
     }
 
