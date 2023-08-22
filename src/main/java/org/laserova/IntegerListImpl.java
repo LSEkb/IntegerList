@@ -59,11 +59,6 @@ public class IntegerListImpl implements IntegerList {
         if (size == storage.length) {
             this.grow(storage.length);
         }
-//        for (int i = size; i > index; i--) {
-//            storage[i] = storage[i - 1];
-//        }
-//        size++;
-//        return storage[index] = item;
         if (index == size) {
             storage[size++] = item;
             return item;
@@ -105,8 +100,9 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public boolean contains(Integer item) {
-        quickSort(storage,0,size-1);
-        return binarySearch(storage,item)!=-1;
+        Integer [] copyStorage=Arrays.copyOf(storage,size);
+        quickSort(copyStorage,1,size-1);
+        return binarySearch(copyStorage,item)!=-1;
     }
 
     @Override
@@ -192,20 +188,6 @@ public class IntegerListImpl implements IntegerList {
         Integer[] newStorage = new Integer[length];
         if (size >= 0) System.arraycopy(storage, 0, newStorage, 0, size);
         storage = newStorage;
-    }
-
-    private void selectionSort(Integer[] storage) {
-        for (int i = 0; i < storage.length - 1; i++) {
-            int minItemIndex = i;
-            for (int j = i + 1; j < storage.length; j++) {
-                if (storage[j] < storage[minItemIndex]) {
-                    minItemIndex = j;
-                }
-            }
-            int transit = storage[i];
-            storage[i] = storage[minItemIndex];
-            storage[minItemIndex] = transit;
-        }
     }
 
     private int binarySearch(Integer[] storage,Integer item) {

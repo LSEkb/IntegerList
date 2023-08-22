@@ -159,7 +159,8 @@ class IntegerListImplTest {
 
     @Test
     void toArray__returnedArrayIsCorrect() {
-        System.out.println(testIntegers09);
+        Integer [] expect = new Integer []{0,1,2,3,4,5,6,7,8,9};
+        assertArrayEquals(expect, testIntegers10.toArray());
     }
 
 }
